@@ -42,8 +42,9 @@ def compute_sufficient_statistics(feature):
 def compute_content_features(features, content_loss_layers):
     """compute the content features from the end_point dict"""
     content_features = {}
-    instance_label = features.keys()[0]
-    instance_label = instance_label[:-14]  # TODO: ugly code, need fix
+    # instance_label = features.keys()[0]
+    # instance_label = instance_label[:-14]  # TODO: ugly code, need fix
+    instance_label = "vgg_19"
     for layer in content_loss_layers:
         content_features[layer] = features[instance_label + '/' + layer]
     return content_features
@@ -52,8 +53,9 @@ def compute_content_features(features, content_loss_layers):
 def compute_style_features(features, style_loss_layers):
     """compute the style features from the end_point dict"""
     style_features = {}
-    instance_label = features.keys()[0]
-    instance_label = instance_label[:-14]  # TODO: ugly code, need fix
+    # instance_label = features.keys()[0]
+    # instance_label = instance_label[:-14]  # TODO: ugly code, need fix
+    instance_label = "vgg_19"
     for layer in style_loss_layers:
         style_features[layer] = compute_gram_matrix(
             features[instance_label + '/' + layer])
@@ -62,7 +64,8 @@ def compute_style_features(features, style_loss_layers):
 
 def compute_approximate_style_features(features, style_loss_layers):
     style_features = {}
-    instance_label = features.keys()[0].split('/')[:-2]
+    # instance_label = features.keys()[0].split('/')[:-2]
+    instance_label = "vgg_19"
     for layer in style_loss_layers:
         style_features[layer] = compute_sufficient_statistics(
             features[instance_label + '/' + layer])
@@ -82,7 +85,7 @@ def extract_image_features(inputs, network_name, reuse=True):
     """
     with slim.arg_scope(vgg.vgg_arg_scope()):
         _, end_points = network_map[network_name](
-            inputs, spatial_squeeze=False, is_training=False, reuse=reuse)
+            inputs, spatial_squeeze=False, is_training=False, reuse=False)
     return end_points
 
 
